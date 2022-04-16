@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufersa.LeMenu.model.OrderingTable;
-import br.edu.ufersa.LeMenu.repository.TableRepository;
+import br.edu.ufersa.LeMenu.repository.OrderingTableRepository;
 
 @Service
 public class TableServices {
 	
 	@Autowired
-	private TableRepository tableRepo;
+	private OrderingTableRepository tableRepo;
 	
 	public Optional<OrderingTable> findById (Long id){
 		return tableRepo.findById(id);	

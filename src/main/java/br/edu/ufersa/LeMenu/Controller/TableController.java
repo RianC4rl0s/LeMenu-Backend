@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufersa.LeMenu.model.Ordered;
 import br.edu.ufersa.LeMenu.model.OrderingTable;
-import br.edu.ufersa.LeMenu.repository.TableRepository;
+import br.edu.ufersa.LeMenu.repository.OrderingTableRepository;
 import br.edu.ufersa.LeMenu.service.TableServices;
 
 @RestController
@@ -27,7 +27,7 @@ public class TableController {
 	@Autowired
 	private TableServices service;
 	
-	private TableRepository tableRepo;
+	private OrderingTableRepository tableRepo;
 	
 	@GetMapping("/search/by-id")
 	public ResponseEntity<OrderingTable> findById (@Param("id") Long id){
