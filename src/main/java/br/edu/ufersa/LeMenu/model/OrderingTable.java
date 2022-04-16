@@ -53,7 +53,7 @@ public class OrderingTable {
 	
 	public OrderingTable(OrderingTable model) {
 		this.id = model.getId();
-		this.code = model.getcode();
+		this.code = model.getCode();
 		this.cart = model.getCart();
 		this.client = model.getClient();
 	}
@@ -85,11 +85,11 @@ public class OrderingTable {
 		this.id = id;
 	}
 
-	public String getcode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setcode(String code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 

@@ -15,18 +15,30 @@ public class Client {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nome;
+	private String name;
 	@OneToOne(mappedBy = "client")
 	private OrderingTable table;
 	
+	
+	public Client() {}
+	public Client(Client model) {
+		this.id = model.getId();
+		this.name = model.getName();
+		this.table = model.getTable();
+	}
+	public Client(Long id, String name, OrderingTable table) {
+		this.id = id;
+		this.name = name;
+		this.table = table;
+	}
 	public Long getId() {
 		return id;
 	}
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public OrderingTable getTable() {
 		return table;
