@@ -1,24 +1,22 @@
 package br.edu.ufersa.LeMenu.Dto;
 
 public class ClientRegisterDto {
-	private String Nome;
+	private String name;
 	private Long tableId;
-	
-	
 	
 	public ClientRegisterDto() {}
 	
-	public ClientRegisterDto(String nome, Long tableId) {
+	public ClientRegisterDto(String name, Long tableId) {
 	
-		Nome = nome;
+	this.name = name;
 		this.tableId = tableId;
 	}
 
-	public String getNome() {
-		return Nome;
+	public String getName() {
+		return name;
 	}
-	public void setNome(String nome) {
-		Nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public Long getTableId() {
 		return tableId;

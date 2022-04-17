@@ -48,40 +48,39 @@ public class ClientController {
 		} else {
 			c.setTable(null);
 			var clientTemp = clientRepos.save(c);
-			if(clientTemp == null) {
+			if (clientTemp == null) {
 				return ResponseEntity.notFound().build();
-			}else {
+			} else {
 				clientRepos.delete(clientTemp);
 				return ResponseEntity.ok("OK");
 			}
-		}/*
-		return clientRepos.findById(id).map(table -> {
-			clientRepos.delete(table);
-			return ResponseEntity.ok("OK");
-		}).orElse(ResponseEntity.notFound().build());
-		*/
+		} /*
+			 * return clientRepos.findById(id).map(table -> { clientRepos.delete(table);
+			 * return ResponseEntity.ok("OK"); }).orElse(ResponseEntity.notFound().build());
+			 */
 	}
 
 	@PostMapping("/new")
 	public ResponseEntity<Long> save(@RequestBody ClientRegisterDto modelDto) {
 
 		Client client = new Client();
-		client.setName(modelDto.getNome());
+		client.setName(modelDto.getName());
 
 		OrderingTable tb = tbRepos.findById(modelDto.getTableId()).get();
 
-		if (tb == null) {
+		/*
+		 * if(!tb.isOpen()) { return ResponseEntity.badRequest().build(); } else { }
+		 */
+		if (tb == null || !tb.getIsOpen()) {
 			return ResponseEntity.badRequest().build();
-		}/*else if(!tb.isOpen()) {
-			return ResponseEntity.badRequest().build();
-		}*/
-		else {
-			client.setTable(tb);
+		} else {
+
+			//client.setTable(tb);
 			tb.setClient(client);
 			tb.setOpen(false);
 			var clientTemp = clientRepos.save(client);
 			var tbTemp = tbRepos.save(tb);
-			if (clientTemp == null || tbTemp == null) {
+			if (clientTemp == null || tbTemp == null ) {
 				return ResponseEntity.badRequest().build();
 			} else {
 				return ResponseEntity.status(HttpStatus.CREATED).body(clientTemp.getId());

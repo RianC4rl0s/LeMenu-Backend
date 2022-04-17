@@ -55,7 +55,7 @@ public class TableController {
 	@PostMapping("/new")
 	public ResponseEntity<Long> save(@RequestBody OrderingTable model) {
 		var tableTemp = tableRepo.save(model);
-		//System.out.println(tableTemp.getcode());
+		
 
 		if (tableTemp == null) {
 			return ResponseEntity.badRequest().build();
@@ -65,8 +65,8 @@ public class TableController {
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<Ordered> update(@PathVariable Long id,@RequestBody OrderingTable tb) {
-		
+	public ResponseEntity<Ordered> update(@PathVariable Long id, @RequestBody OrderingTable tb) {
+
 		return null;
 	}
 }

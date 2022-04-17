@@ -7,6 +7,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import br.edu.ufersa.LeMenu.Dto.ClientRegisterDto;
+
 //@Entity
 @Entity
 @Table(name="tb_client")
@@ -16,6 +20,7 @@ public class Client {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	@JsonIgnore
 	@OneToOne(mappedBy = "client")
 	private OrderingTable table;
 	
@@ -25,6 +30,9 @@ public class Client {
 		this.id = model.getId();
 		this.name = model.getName();
 		this.table = model.getTable();
+	}
+	public Client(ClientRegisterDto model) {
+		this.name = model.getName();
 	}
 	public Client(Long id, String name, OrderingTable table) {
 		this.id = id;

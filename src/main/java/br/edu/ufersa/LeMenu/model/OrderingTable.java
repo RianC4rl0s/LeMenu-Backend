@@ -13,36 +13,34 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity	
-@Table(name="tb_ordering_table")
+@Entity
+@Table(name = "tb_ordering_table")
 public class OrderingTable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String code;
-	
+	private boolean isOpen;
+
 	@ManyToMany
-	@JoinTable(
-	  name = "order_cart", 
-	  joinColumns = @JoinColumn(name = "ordering_table_id"), 
-	  inverseJoinColumns = @JoinColumn(name = "ordered_id"))
+	@JoinTable(name = "order_cart", joinColumns = @JoinColumn(name = "ordering_table_id"), inverseJoinColumns = @JoinColumn(name = "ordered_id"))
 	private Set<Ordered> cart;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+	@JoinColumn(name = "client_id", referencedColumnName = "id")
 	private Client client;
 
-	private boolean isOpen = false;
 	// Constructors
 
 	public OrderingTable() {
 	}
 
-	public OrderingTable(Long id, String code, Set<Ordered> cart, Client client) {
+	public OrderingTable(Long id, String code, Set<Ordered> cart, Client client,boolean isOpen) {
 		this.id = id;
 		this.code = code;
 		this.cart = cart;
 		this.client = client;
+		this.isOpen = isOpen;
 	}
 
 	public OrderingTable(String code, Client client) {
@@ -50,7 +48,11 @@ public class OrderingTable {
 		this.code = code;
 		this.client = client;
 	}
-	
+	public OrderingTable(String code, boolean isOpen) {
+
+		this.code = code;
+		this.isOpen = isOpen;
+	}
 	public OrderingTable(OrderingTable model) {
 		this.id = model.getId();
 		this.code = model.getCode();
@@ -58,24 +60,6 @@ public class OrderingTable {
 		this.client = model.getClient();
 	}
 
-	// Methods
-	public void openTable(Long id) {
-		isOpen =true;
-	}
-
-	public void openTable(String code) {
-		isOpen = true;
-	}
-
-	public void closeTable(Long id, Client cliend) {
-		isOpen = false;
-	}
-
-	public void closeTable(String code, Client cliend) {
-		isOpen = false;
-	}
-
-	
 	// Getters and setters
 	public Long getId() {
 		return id;
@@ -108,13 +92,30 @@ public class OrderingTable {
 	public void setClient(Client client) {
 		this.client = client;
 	}
-	
-	public boolean isOpen() {
+
+	public boolean getIsOpen() {
 		return isOpen;
 	}
 
 	public void setOpen(boolean isOpen) {
 		this.isOpen = isOpen;
 	}
-	
+
+	// Methods
+	public void openTable(Long id) {
+		isOpen = true;
+	}
+
+	public void openTable(String code) {
+		isOpen = true;
+	}
+
+	public void closeTable(Long id, Client cliend) {
+		isOpen = false;
+	}
+
+	public void closeTable(String code, Client cliend) {
+		isOpen = false;
+	}
+
 }
