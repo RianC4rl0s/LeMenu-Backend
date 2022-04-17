@@ -58,6 +58,7 @@ public class OrderingTable {
 		this.code = model.getCode();
 		this.cart = model.getCart();
 		this.client = model.getClient();
+		this.isOpen = model.getIsOpen();
 	}
 
 	// Getters and setters
