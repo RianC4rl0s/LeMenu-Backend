@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ufersa.LeMenu.model.Ordered;
 import br.edu.ufersa.LeMenu.model.OrderingTable;
 import br.edu.ufersa.LeMenu.repository.OrderingTableRepository;
 import br.edu.ufersa.LeMenu.service.TableServices;
@@ -55,7 +54,6 @@ public class TableController {
 	@PostMapping("/new")
 	public ResponseEntity<Long> save(@RequestBody OrderingTable model) {
 		var tableTemp = tableRepo.save(model);
-		
 
 		if (tableTemp == null) {
 			return ResponseEntity.badRequest().build();
@@ -65,8 +63,52 @@ public class TableController {
 	}
 
 	@PutMapping("/update/{id}")
-	public ResponseEntity<Ordered> update(@PathVariable Long id, @RequestBody OrderingTable tb) {
-
-		return null;
+	public ResponseEntity<Long> update(@PathVariable Long id, @RequestBody OrderingTable tb) {
+		
+		OrderingTable tbTemp = tableRepo.findById(id).get();
+		if (tbTemp == null) {
+			return ResponseEntity.notFound().build();
+		} else {
+			tbTemp.setCode(tb.getCode());
+			tbTemp.setIsOpen(tb.getIsOpen());
+			var tbTemp2 = tableRepo.save(tbTemp);
+			if (tbTemp2 == null) {
+				return ResponseEntity.badRequest().build();
+			} else {
+				return ResponseEntity.status(HttpStatus.CREATED).body(tbTemp2.getId());
+			}
+		}
+	}
+	@PutMapping("/close/{id}")
+	public ResponseEntity<Long> closeTable(@PathVariable Long id) {
+		
+		OrderingTable tbTemp = tableRepo.findById(id).get();
+		if (tbTemp == null) {
+			return ResponseEntity.notFound().build();
+		} else {
+			tbTemp.setIsOpen(false);
+			var tbTemp2 = tableRepo.save(tbTemp);
+			if (tbTemp2 == null) {
+				return ResponseEntity.badRequest().build();
+			} else {
+				return ResponseEntity.status(HttpStatus.CREATED).body(tbTemp2.getId());
+			}
+		}
+	}
+	@PutMapping("/open/{id}")
+	public ResponseEntity<Long> openTable(@PathVariable Long id) {
+		
+		OrderingTable tbTemp = tableRepo.findById(id).get();
+		if (tbTemp == null) {
+			return ResponseEntity.notFound().build();
+		} else {
+			tbTemp.setIsOpen(true);
+			var tbTemp2 = tableRepo.save(tbTemp);
+			if (tbTemp2 == null) {
+				return ResponseEntity.badRequest().build();
+			} else {
+				return ResponseEntity.status(HttpStatus.CREATED).body(tbTemp2.getId());
+			}
+		}
 	}
 }

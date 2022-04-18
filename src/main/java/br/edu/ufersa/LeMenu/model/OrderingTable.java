@@ -98,7 +98,7 @@ public class OrderingTable {
 		return isOpen;
 	}
 
-	public void setOpen(boolean isOpen) {
+	public void setIsOpen(boolean isOpen) {
 		this.isOpen = isOpen;
 	}
 

@@ -77,7 +77,7 @@ public class ClientController {
 
 			//client.setTable(tb);
 			tb.setClient(client);
-			tb.setOpen(false);
+			tb.setIsOpen(false);
 			var clientTemp = clientRepos.save(client);
 			var tbTemp = tbRepos.save(tb);
 			if (clientTemp == null || tbTemp == null ) {
