@@ -16,7 +16,7 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private Double price;
+	private double price;
 	private double sale;
 	private String image;
 	
@@ -24,7 +24,7 @@ public class Product {
 	
 	
 	public Product(){}
-	public Product(Long id, String name, Double price, double sale, String image) {
+	public Product(Long id, String name, double price, double sale, String image) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -57,7 +57,7 @@ public class Product {
 	public Double getPrice() {
 		return price;
 	}
-	public void setPrice(Double price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 	public double getSale() {

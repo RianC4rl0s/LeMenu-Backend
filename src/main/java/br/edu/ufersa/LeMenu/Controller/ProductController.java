@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import br.edu.ufersa.LeMenu.model.Ordered;
 import br.edu.ufersa.LeMenu.model.Product;
 import br.edu.ufersa.LeMenu.repository.ProductRepository;
@@ -27,6 +28,7 @@ public class ProductController {
 	@Autowired
 	private ProductServices service;
 	
+	@Autowired
 	private ProductRepository proRepo;
 	
 	@GetMapping("/search/by-id")
@@ -55,7 +57,7 @@ public class ProductController {
 	}
 	
 	@PostMapping("/new") 
-	public ResponseEntity<Long> save (@ModelAttribute Product model){	
+	public ResponseEntity<Long> save (@RequestBody Product model){	
 		var productTemp = proRepo.save(model);	
 		
 		if(productTemp == null) {
