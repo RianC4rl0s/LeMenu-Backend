@@ -6,6 +6,11 @@ import javax.persistence.PrimaryKeyJoinColumn;
 @Entity
 @PrimaryKeyJoinColumn(name="id_clerk")
 public class Administrator extends Clerk {
+
+	public Administrator(User model) {
+		super(model);
+		// TODO Auto-generated constructor stub
+	}
 	/*private Long id;
 
 	public Long getId() {
