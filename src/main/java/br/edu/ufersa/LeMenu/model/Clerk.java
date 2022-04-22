@@ -9,31 +9,28 @@ import javax.persistence.PrimaryKeyJoinColumn;
 @PrimaryKeyJoinColumn(name="id_user")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Clerk extends User{
-	private Long id;
-	private String login;
-	private String passord;
 	private String cpf;
+	private String phone;
+	private String login;
+	private String password;	
 	
+	public Clerk() {}
 	
-	
-	
-	public Long getId() {
-		return id;
+	public Clerk(User model) {
+		super(model.getId(), model.getName());
 	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+
 	public String getLogin() {
 		return login;
 	}
 	public void setLogin(String login) {
 		this.login = login;
 	}
-	public String getPassord() {
-		return passord;
+	public String getPassword() {
+		return password;
 	}
-	public void setPassord(String passord) {
-		this.passord = passord;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public String getCpf() {
 		return cpf;
@@ -41,8 +38,14 @@ public class Clerk extends User{
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	
-	
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 	
 	
 }
