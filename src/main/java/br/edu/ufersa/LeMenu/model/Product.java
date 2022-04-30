@@ -18,39 +18,27 @@ public class Product {
 	private String name;
 	private double price;
 	private double sale;
-	private String description;
 	private String image;
-	private boolean isOnMenu;
+	
 	
 	
 	
 	public Product(){}
-	public Product(String name, double price, double sale, String image, boolean isOnMenu, String description) {
-		this.name = name;
-		this.price = price;
-		this.sale = sale;
-		this.image = image;
-		this.isOnMenu = isOnMenu;
-		this.description = description;
-	}
-	public Product(Long id, String name, double price, double sale, String image,boolean isOnMenu, String description) {
+	public Product(Long id, String name, double price, double sale, String image) {
+		super();
 		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.sale = sale;
 		this.image = image;
-		this.isOnMenu= isOnMenu;
-		this.description= description;
 	}
+	
 	public Product(Product model) {
 		this.id = model.getId();
 		this.name = model.getName();
 		this.price = model.getPrice();
 		this.sale = model.getSale();
 		this.image = model.getImage();
-		this.isOnMenu= model.getIsOnMenu();
-		this.description= model.getDescription();
-		
 	}
 	
 	// Getters and Setters
@@ -83,18 +71,6 @@ public class Product {
 	}
 	public void setImage(String image) {
 		this.image = image;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public boolean getIsOnMenu() {
-		return isOnMenu;
-	}
-	public void setIsOnMenu(boolean isOnMenu) {
-		this.isOnMenu = isOnMenu;
 	}
 	
 	

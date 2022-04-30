@@ -8,13 +8,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.bind.annotation.RequestBody;
+import br.edu.ufersa.LeMenu.model.Ordered;
 import br.edu.ufersa.LeMenu.model.Product;
 import br.edu.ufersa.LeMenu.repository.ProductRepository;
 import br.edu.ufersa.LeMenu.service.ProductServices;
@@ -66,52 +68,7 @@ public class ProductController {
 	}
 	
 	@PutMapping("/update/{id}") 
-	public ResponseEntity<Long> update (@PathVariable Long id, @RequestBody Product p){
-		Product pTemp = proRepo.findById(id).get();
-		if (pTemp == null) {
-			return ResponseEntity.notFound().build();
-		} else {
-			pTemp.setName(p.getName());
-			pTemp.setImage(p.getImage());
-			pTemp.setDescription(p.getDescription());
-			pTemp.setPrice(p.getPrice());
-			pTemp.setSale(p.getSale());
-			var pTemp2 = proRepo.save(pTemp);
-			if (pTemp2 == null) {
-				return ResponseEntity.badRequest().build();
-			} else {
-				return ResponseEntity.status(HttpStatus.CREATED).body(pTemp2.getId());
-			}
-		}
-	}
-	@PutMapping("/put/{id}") 
-	public ResponseEntity<Long> putOnMenu (@PathVariable Long id){
-		Product pTemp = proRepo.findById(id).get();
-		if (pTemp == null) {
-			return ResponseEntity.notFound().build();
-		} else {
-			pTemp.setIsOnMenu(true);
-			var pTemp2 = proRepo.save(pTemp);
-			if (pTemp2 == null) {
-				return ResponseEntity.badRequest().build();
-			} else {
-				return ResponseEntity.status(HttpStatus.CREATED).body(pTemp2.getId());
-			}
-		}
-	}
-	@PutMapping("/peek/{id}") 
-	public ResponseEntity<Long> peekOfMenu (@PathVariable Long id){
-		Product pTemp = proRepo.findById(id).get();
-		if (pTemp == null) {
-			return ResponseEntity.notFound().build();
-		} else {
-			pTemp.setIsOnMenu(false);
-			var pTemp2 = proRepo.save(pTemp);
-			if (pTemp2 == null) {
-				return ResponseEntity.badRequest().build();
-			} else {
-				return ResponseEntity.status(HttpStatus.CREATED).body(pTemp2.getId());
-			}
-		}
+	public ResponseEntity<Ordered> update (@PathVariable Long id){
+		return null;
 	}
 }
