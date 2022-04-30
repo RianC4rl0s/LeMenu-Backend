@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity	
@@ -19,6 +20,7 @@ public class Product {
 	private double price;
 	private double sale;
 	private String description;
+	@Lob
 	private String image;
 	private boolean isOnMenu;
 	
