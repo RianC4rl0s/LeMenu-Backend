@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufersa.LeMenu.model.Clerk;
+import br.edu.ufersa.LeMenu.model.User;
 import br.edu.ufersa.LeMenu.repository.ClerkRepository;
 import br.edu.ufersa.LeMenu.service.ClerkServices;
 
@@ -28,7 +29,7 @@ public class ClerkController {
 	@Autowired ClerkRepository repo;
 
 	@GetMapping("/search/all")
-	public List<Clerk> findAll() {
+	public List<User> findAll() {
 		return service.findAll();
 	}
 	
@@ -57,7 +58,7 @@ public class ClerkController {
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Long> update(@PathVariable Long id, @RequestBody Clerk model) {
 		
-		Clerk userTemp = repo.findById(id).get();
+		Clerk userTemp = (Clerk) repo.findById(id).get();
 		if (userTemp == null) {
 			return ResponseEntity.notFound().build();
 		} else {
