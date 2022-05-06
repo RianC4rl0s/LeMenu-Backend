@@ -72,7 +72,6 @@ public class ProductController {
 			return ResponseEntity.notFound().build();
 		} else {
 			pTemp.setName(p.getName());
-			pTemp.setImage(p.getImage());
 			pTemp.setDescription(p.getDescription());
 			pTemp.setPrice(p.getPrice());
 			pTemp.setSale(p.getSale());
