@@ -8,6 +8,7 @@ import br.edu.ufersa.LeMenu.model.Role;
 import br.edu.ufersa.LeMenu.model.User;
 import br.edu.ufersa.LeMenu.repository.RoleRepository;
 import br.edu.ufersa.LeMenu.repository.UserRepository;
+import br.edu.ufersa.LeMenu.service.UserService;
 
 @Service
 public class UserDataLoad implements CommandLineRunner {
@@ -18,6 +19,9 @@ public class UserDataLoad implements CommandLineRunner {
 	@Autowired
 	UserRepository userRepository;
 	
+
+	@Autowired
+	UserService userService;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -51,8 +55,8 @@ public class UserDataLoad implements CommandLineRunner {
 					.orElseThrow(() -> new RuntimeException("Role don't exists"));
 			
 			user.addRole(roleAdmin);			
-			userRepository.save(user);
-//			userService.save(user);
+//			userRepository.save(user);
+			userService.save(user);
 //			log.info("Default admin created");
 			System.out.println("Default admin created");
 		}
