@@ -1,6 +1,10 @@
 package br.edu.ufersa.LeMenu.model;
 
+import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -9,34 +13,30 @@ import javax.persistence.PrimaryKeyJoinColumn;
 @PrimaryKeyJoinColumn(name="id_user")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Clerk extends User{
+	
+	@Column(unique = true)
 	private String cpf;
+	@Column(unique = true)
 	private String phone;
-	private String login;
-	private String password;	
 	
 	public Clerk() {}
 	
 	public Clerk(User model) {
-		super(model.getId(), model.getName());
+		super(model.getId(), model.getName(),model.getLogin(),model.getPassword(),model.getRoles(),model.isActive());
 	}
-
-	public String getLogin() {
-		return login;
-	}
-	public void setLogin(String login) {
-		this.login = login;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getCpf() {
-		return cpf;
-	}
+	
+	
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+	
+	public Clerk(Long id, String name, String login, String password, List<Role> roles, boolean active) {
+		super(id, name, login, password, roles, active);
+		// TODO Auto-generated constructor stub
+	}
+
+	public String getCpf() {
+		return cpf;
 	}
 
 	public String getPhone() {
