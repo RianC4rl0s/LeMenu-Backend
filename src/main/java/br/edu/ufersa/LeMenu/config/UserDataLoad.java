@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufersa.LeMenu.model.Role;
+import br.edu.ufersa.LeMenu.model.User;
 import br.edu.ufersa.LeMenu.repository.RoleRepository;
 import br.edu.ufersa.LeMenu.repository.UserRepository;
 
@@ -22,6 +23,7 @@ public class UserDataLoad implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
 		loadRoles();
+		loadUser();
 	}
 	
 	
@@ -37,5 +39,22 @@ public class UserDataLoad implements CommandLineRunner {
 			roleRepository.save(estRole);
 			System.out.println("Roles created");
 		}		
+	}
+	
+	private void loadUser() {
+		if (userRepository.count() == 0) {
+			User user = new User();
+			user.setLogin("admin@lemenu.com");
+			user.setPassword("senha123");
+			
+			Role roleAdmin = roleRepository.findByName("ROLE_ADMIN")
+					.orElseThrow(() -> new RuntimeException("Role don't exists"));
+			
+			user.addRole(roleAdmin);			
+			userRepository.save(user);
+//			userService.save(user);
+//			log.info("Default admin created");
+			System.out.println("Default admin created");
+		}
 	}
 }

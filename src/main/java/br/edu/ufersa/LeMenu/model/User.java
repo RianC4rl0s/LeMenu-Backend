@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name="tb_user")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class User implements UserInterface{
+public class User implements UserInterface{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
