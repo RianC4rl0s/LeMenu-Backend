@@ -1,6 +1,7 @@
 package br.edu.ufersa.LeMenu.Controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,19 +15,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ufersa.LeMenu.Dto.ClerkDTO;
 import br.edu.ufersa.LeMenu.model.Clerk;
 import br.edu.ufersa.LeMenu.model.User;
-import br.edu.ufersa.LeMenu.repository.ClerkRepository;
-import br.edu.ufersa.LeMenu.service.ClerkServices;
+import br.edu.ufersa.LeMenu.repository.UserRepository;
+import br.edu.ufersa.LeMenu.service.UserServiceImpl;
 
 @RestController
 @RequestMapping("/clerk")
 public class ClerkController {
 	
 	@Autowired
-	private ClerkServices service;
+	private UserServiceImpl service;
 	
-	@Autowired ClerkRepository repo;
+	@Autowired 
+	private UserRepository repo;
 
 	@GetMapping("/search/all")
 	public List<User> findAll() {
@@ -34,13 +37,20 @@ public class ClerkController {
 	}
 	
 	@PostMapping("/new")
-	public ResponseEntity<Long> save(@RequestBody Clerk model) {
-		var userTemp = repo.save(model);
+	public ResponseEntity<Optional<User>> save(@RequestBody ClerkDTO model) {
+		Clerk clerkTemp = new Clerk();
+		clerkTemp.setLogin(model.getLogin());
+		clerkTemp.setName(model.getName());
+		clerkTemp.setPhone(model.getPhone());
+		clerkTemp.setCpf(model.getCpf());
+		clerkTemp.setPassword(model.getPassword());
+		
+		var userTemp = service.save(clerkTemp);
 
 		if (userTemp == null) {
 			return ResponseEntity.badRequest().build();
 		} else {
-			return ResponseEntity.status(HttpStatus.CREATED).body(userTemp.getId());
+			return ResponseEntity.status(HttpStatus.CREATED).body(userTemp);
 		}
 	}
 	
@@ -56,7 +66,7 @@ public class ClerkController {
 	}
 	
 	@PutMapping("/update/{id}")
-	public ResponseEntity<Long> update(@PathVariable Long id, @RequestBody Clerk model) {
+	public ResponseEntity<Optional<User>> update(@PathVariable Long id, @RequestBody ClerkDTO model) {
 		
 		Clerk userTemp = (Clerk) repo.findById(id).get();
 		if (userTemp == null) {
@@ -77,11 +87,11 @@ public class ClerkController {
 			if (model.getPhone() != null && !model.getPhone().equals("")) {
 				userTemp.setPhone(model.getPhone());
 			}
-			var temp2 = repo.save(userTemp);
+			var temp2 = service.save(userTemp);
 			if (temp2 == null) {
 				return ResponseEntity.badRequest().build();
 			} else {
-				return ResponseEntity.status(HttpStatus.CREATED).body(temp2.getId());
+				return ResponseEntity.status(HttpStatus.CREATED).body(temp2);
 			}
 		}
 	}
