@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_ordering_table")
 public class OrderingTable {
@@ -21,7 +23,7 @@ public class OrderingTable {
 	private Long id;
 	private String code;
 	private boolean isOpen;
-
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "order_cart", joinColumns = @JoinColumn(name = "ordering_table_id"), inverseJoinColumns = @JoinColumn(name = "ordered_id"))
 	private Set<Ordered> cart;
