@@ -37,10 +37,16 @@ public class UserDataLoad implements CommandLineRunner {
 			Role adminRole = new Role();
 			adminRole.setName("ROLE_ADMIN");
 			roleRepository.save(adminRole);
+			Role adminRole2 = new Role();
+			adminRole2.setName("ROLE_SUPER_ADMIN");
+			roleRepository.save(adminRole2);
 			
-			Role estRole = new Role();
-			estRole.setName("ROLE_ESTABLISHMENT");
-			roleRepository.save(estRole);
+			Role clerk = new Role();
+			clerk.setName("ROLE_ATTENDANT");
+			roleRepository.save(clerk);
+			Role clerk2 = new Role();
+			clerk2.setName("ROLE_SUPER_ATTENDANT");
+			roleRepository.save(clerk2);
 			System.out.println("Roles created");
 		}		
 	}
@@ -51,7 +57,7 @@ public class UserDataLoad implements CommandLineRunner {
 			user.setLogin("admin@lemenu.com");
 			user.setPassword("senha123");
 			
-			Role roleAdmin = roleRepository.findByName("ROLE_ADMIN")
+			Role roleAdmin = roleRepository.findByName("ROLE_SUPER_ADMIN")
 					.orElseThrow(() -> new RuntimeException("Role don't exists"));
 			
 			user.addRole(roleAdmin);			
@@ -59,6 +65,20 @@ public class UserDataLoad implements CommandLineRunner {
 			userService.save(user);
 //			log.info("Default admin created");
 			System.out.println("Default admin created");
+			
+			User userAttendant = new User();
+			userAttendant.setLogin("attendant@lemenu.com");
+			userAttendant.setPassword("senha123");
+			userAttendant.setName("Teste");
+			
+			Role roleAttendant = roleRepository.findByName("ROLE_SUPER_ATTENDANT")
+					.orElseThrow(() -> new RuntimeException("Role don't exists"));
+			
+			userAttendant.addRole(roleAttendant);			
+//			userRepository.save(user);
+			userService.save(userAttendant);
+//			log.info("Default admin created");
+			System.out.println("Default attendant created");
 		}
 	}
 }
