@@ -26,7 +26,7 @@ public class User implements UserInterface{
 	private String name;
 	@Column(unique=true)
 	private String login;
-	@JsonIgnore
+	//@JsonIgnore
 	private String password;	
 	
 	private boolean active = true;

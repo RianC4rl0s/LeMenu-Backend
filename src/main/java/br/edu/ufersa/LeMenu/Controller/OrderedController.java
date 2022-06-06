@@ -2,6 +2,8 @@ package br.edu.ufersa.LeMenu.Controller;
 
 import java.util.List;
 
+import javax.persistence.criteria.Order;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -12,10 +14,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufersa.LeMenu.model.Ordered;
+import br.edu.ufersa.LeMenu.model.OrderingTable;
 import br.edu.ufersa.LeMenu.repository.OrderedRepository;
 import br.edu.ufersa.LeMenu.service.OrderedServices;
 
@@ -65,7 +69,20 @@ public class OrderedController {
 	}
 	
 	@PutMapping("/update/{id}") 
-	public ResponseEntity<Ordered> update (@ModelAttribute @PathVariable Long id){
-		return null;
+	public ResponseEntity<Ordered> update (@PathVariable Long id, @RequestBody Ordered o){
+		Ordered odTemp= ordRepo.findById(id).get();
+		if (odTemp == null) {
+			return ResponseEntity.notFound().build();
+		} else {
+			odTemp.setStatus(o.getStatus());
+			odTemp.setDescription(o.getDescription());
+			var odTemp2 = ordRepo.save(odTemp);
+			if (odTemp2 == null) {
+				return ResponseEntity.badRequest().build();
+			} else {
+				return ResponseEntity.status(HttpStatus.CREATED).body(odTemp2);
+			}
+		}
+		//return null;
 	}
 }
