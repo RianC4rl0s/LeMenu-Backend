@@ -49,9 +49,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		
 		if (openRoutes.contains(request.getServletPath())) {
-			if (request.getServletPath().equals("/login") || request.getServletPath().equals("/token/refresh")) {
-				filterChain.doFilter(request, response);
-			}
+			filterChain.doFilter(request, response);
 		} else {
 			String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
