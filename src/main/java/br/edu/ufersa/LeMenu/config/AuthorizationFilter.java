@@ -31,7 +31,16 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
 	private List<String> openRoutes = Arrays.asList(
 			"/login",
-			"/token/refresh", 
+			"/token/refresh",
+			"/table/search/by-code",
+			"/table/open",
+			"/table/close",
+			"/table/list/order",
+			"/table/add-order",
+			"/table/remove-order",
+			"/product/search/all",
+			"/client/new",
+			"/ordered/new",
 			"CLIENTROUTES", 
 			"/request/search");
 	
@@ -40,7 +49,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		
 		if (openRoutes.contains(request.getServletPath())) {
-			filterChain.doFilter(request, response);
+			if (request.getServletPath().equals("/login") || request.getServletPath().equals("/token/refresh")) {
+				filterChain.doFilter(request, response);
+			}
 		} else {
 			String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
@@ -71,7 +82,6 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 					new ObjectMapper().writeValue(response.getOutputStream(), error);
 				}
 			} else {
-				filterChain.doFilter(request, response);
 			}
 		}
 	}
