@@ -1,6 +1,7 @@
 package br.edu.ufersa.LeMenu.service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -63,5 +64,7 @@ public class UserServiceImpl implements UserService {
 				.orElseThrow(() -> new UsernameNotFoundException("User not found with that login " + login));
 	}
 
-	
+	public List<User> findAll() {
+		return userRepository.findAll();
+	}
 }

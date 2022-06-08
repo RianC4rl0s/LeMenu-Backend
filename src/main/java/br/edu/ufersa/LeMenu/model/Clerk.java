@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -24,7 +23,6 @@ public class Clerk extends User{
 	public Clerk(User model) {
 		super(model.getId(), model.getName(),model.getLogin(),model.getPassword(),model.getRoles(),model.isActive());
 	}
-	
 	
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
