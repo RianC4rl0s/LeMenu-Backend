@@ -26,7 +26,7 @@ public class OrderingTable {
 	private String code;
 	private boolean isOpen;
 	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "order_cart", joinColumns = @JoinColumn(name = "ordering_table_id"), inverseJoinColumns = @JoinColumn(name = "ordered_id"))
 	private Set<Ordered> cart;
 

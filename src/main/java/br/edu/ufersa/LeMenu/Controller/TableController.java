@@ -150,7 +150,7 @@ public class TableController {
 		} else {
 			//tbTemp.setCode(tb.getCode());
 			//tbTemp.setIsOpen(tb.getIsOpen());
-			tbTemp.getCart().remove(o);
+			tbTemp.getCart().removeIf(element -> (element.getDescription().equals(o.getDescription())));
 			var tbTemp2 = tableRepo.save(tbTemp);
 			if (tbTemp2 == null) {
 				return ResponseEntity.badRequest().build();
