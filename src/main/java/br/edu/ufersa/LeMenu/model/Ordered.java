@@ -24,7 +24,7 @@ public class Ordered {
 	private String description;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="product_id")
+	@JoinColumn(name="product_id", referencedColumnName = "id")
 	private Product product;
 	
 	@ManyToMany(mappedBy = "cart")

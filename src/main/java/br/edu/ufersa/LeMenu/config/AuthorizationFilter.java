@@ -33,20 +33,21 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 			"/login",
 			"/token/refresh",
 			"/table/search/by-code",
-			"/table/open",
+			"/table/open/",
 			"/table/close",
 			"/table/list/order",
 			"/table/add-order",
 			"/table/remove-order",
 			"/product/search/all",
 			"/client/new",
-			"/ordered/new",
-			"CLIENTROUTES", 
+			"/ordered/new", 
 			"/request/search");
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+		
+		System.out.println("ALOOOOOOO" + request.getServletPath());
 		
 		if (openRoutes.contains(request.getServletPath())) {
 			filterChain.doFilter(request, response);
@@ -80,6 +81,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 					new ObjectMapper().writeValue(response.getOutputStream(), error);
 				}
 			} else {
+				filterChain.doFilter(request, response);
 			}
 		}
 	}
