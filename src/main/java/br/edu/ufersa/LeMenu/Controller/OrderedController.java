@@ -27,6 +27,7 @@ public class OrderedController {
 	@Autowired
 	private OrderedServices service;
 	
+	@Autowired
 	private OrderedRepository ordRepo;
 	
 	@GetMapping("/search/by-id")

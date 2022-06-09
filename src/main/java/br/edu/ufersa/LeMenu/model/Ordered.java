@@ -23,7 +23,7 @@ public class Ordered {
 	private String status;
 	private String description;
 	
-	@ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="product_id")
 	private Product product;
 	
