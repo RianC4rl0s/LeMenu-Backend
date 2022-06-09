@@ -2,18 +2,20 @@ package br.edu.ufersa.LeMenu.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="tb_ordered")
-@PrimaryKeyJoinColumn(name="id_produto")
-public class Ordered extends Product{
+public class Ordered {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -21,20 +23,26 @@ public class Ordered extends Product{
 	private String status;
 	private String description;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="product_id", referencedColumnName = "id")
+	private Product product;
+	
 	@ManyToMany(mappedBy = "cart")
 	private Set<OrderingTable> orderedTable;
 	
 	public Ordered(){};
-	public Ordered(Long id, String status, String description) {
+	public Ordered(Long id, String status, String description,Product product) {
 		this.id = id;
 		this.status = status;
 		this.description = description;
+		this.product = product;
 	}
 	
 	public Ordered(Ordered model) {
 		this.id = model.getId();
 		this.status = model.getStatus();
 		this.description = model.getDescription();
+		this.product = model.getProduct();
 	}
 	
 	public Long getId() {
@@ -60,6 +68,12 @@ public class Ordered extends Product{
 	}
 	public void setOrderedTable(Set<OrderingTable> orderedTable) {
 		this.orderedTable = orderedTable;
+	}
+	public Product getProduct() {
+		return product;
+	}
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 	
 	

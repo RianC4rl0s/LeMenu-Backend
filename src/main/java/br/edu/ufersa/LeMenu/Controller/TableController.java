@@ -91,8 +91,8 @@ public class TableController {
 			}
 		}
 	}
-	@PutMapping("/close/{id}")
-	public ResponseEntity<Long> closeTable(@PathVariable Long id) {
+	@PutMapping("/close")
+	public ResponseEntity<Long> closeTable(@Param("id") Long id) {
 		
 		OrderingTable tbTemp = tableRepo.findById(id).get();
 		if (tbTemp == null) {
@@ -107,8 +107,8 @@ public class TableController {
 			}
 		}
 	}
-	@PutMapping("/open/{id}")
-	public ResponseEntity<Long> openTable(@PathVariable Long id) {
+	@PutMapping("/open")
+	public ResponseEntity<Long> openTable(@Param("id") Long id) {
 		
 		OrderingTable tbTemp = tableRepo.findById(id).get();
 		if (tbTemp == null) {
@@ -123,8 +123,8 @@ public class TableController {
 			}
 		}
 	}
-	@PutMapping("/add-order/{id}")
-	public ResponseEntity<Long> addOrder(@PathVariable Long id, @RequestBody Ordered o) {
+	@PutMapping("/add-order")
+	public ResponseEntity<Long> addOrder(@Param("id") Long id, @RequestBody Ordered o) {
 		
 		OrderingTable tbTemp = tableRepo.findById(id).get();
 		if (tbTemp == null) {
@@ -141,8 +141,8 @@ public class TableController {
 			}
 		}
 	}
-	@PutMapping("/remove-order/{id}")
-	public ResponseEntity<Long> removeOrder(@PathVariable Long id, @RequestBody Ordered o) {
+	@PutMapping("/remove-order")
+	public ResponseEntity<Long> removeOrder(@Param("id") Long id, @RequestBody Ordered o) {
 		
 		OrderingTable tbTemp = tableRepo.findById(id).get();
 		if (tbTemp == null) {
