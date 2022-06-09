@@ -2,8 +2,6 @@ package br.edu.ufersa.LeMenu.Controller;
 
 import java.util.List;
 
-import javax.persistence.criteria.Order;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufersa.LeMenu.model.Ordered;
-import br.edu.ufersa.LeMenu.model.OrderingTable;
 import br.edu.ufersa.LeMenu.repository.OrderedRepository;
 import br.edu.ufersa.LeMenu.service.OrderedServices;
 
@@ -30,6 +27,7 @@ public class OrderedController {
 	@Autowired
 	private OrderedServices service;
 	
+	@Autowired
 	private OrderedRepository ordRepo;
 	
 	@GetMapping("/search/by-id")

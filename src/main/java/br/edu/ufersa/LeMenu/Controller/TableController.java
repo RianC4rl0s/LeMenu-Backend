@@ -126,7 +126,7 @@ public class TableController {
 	@PutMapping("/add-order")
 	public ResponseEntity<Long> addOrder(@Param("id") Long id, @RequestBody Ordered o) {
 		
-		OrderingTable tbTemp = tableRepo.findById(id).get();
+		OrderingTable tbTemp = tableRepo.findById(id).orElse(null);
 		if (tbTemp == null) {
 			return ResponseEntity.notFound().build();
 		} else {

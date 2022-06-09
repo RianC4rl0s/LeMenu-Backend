@@ -19,19 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.ufersa.LeMenu.model.Clerk;
 import br.edu.ufersa.LeMenu.model.Role;
 import br.edu.ufersa.LeMenu.model.User;
-import br.edu.ufersa.LeMenu.repository.ClerkRepository;
 import br.edu.ufersa.LeMenu.repository.RoleRepository;
-import br.edu.ufersa.LeMenu.service.ClerkServices;
+import br.edu.ufersa.LeMenu.repository.UserRepository;
+import br.edu.ufersa.LeMenu.service.UserServiceImpl;
 
 @RestController
 @RequestMapping("/clerk")
 public class ClerkController {
 
 	@Autowired
-	private ClerkServices service;
+	private UserServiceImpl service;
 
 	@Autowired
-	ClerkRepository repo;
+	UserRepository repo;
 
 	@Autowired
 	RoleRepository roleRepository;
@@ -41,6 +41,20 @@ public class ClerkController {
 	@GetMapping("/search/all")
 	public List<User> findAll() {
 		Role roleAttendant = roleRepository.findByName("ROLE_ATTENDANT")
+				.orElseThrow(() -> new RuntimeException("Role don't exists"));
+		List<User> temp = service.findAll();
+		List<User> users =  new ArrayList<>();
+		for(int i = 0 ; i< temp.size();i++) {
+			if(temp.get(i).getRoles().contains(roleAttendant)) {
+				users.add(temp.get(i));
+			}
+		}
+		return users;
+	}
+	
+	@GetMapping("/search/alladm")
+	public List<User> findAllAdm() {
+		Role roleAttendant = roleRepository.findByName("ROLE_ADMIN")
 				.orElseThrow(() -> new RuntimeException("Role don't exists"));
 		List<User> temp = service.findAll();
 		List<User> users =  new ArrayList<>();
@@ -69,7 +83,23 @@ public class ClerkController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(userTemp.getId());
 		}
 	}
+	@PostMapping("/newadm")
+	public ResponseEntity<Long> saveAdm(@RequestBody Clerk model) {
+		Role roleAttendant = roleRepository.findByName("ROLE_ADMIN")
+				.orElseThrow(() -> new RuntimeException("Role don't exists"));
+		model.addRole(roleAttendant);
+		
+		String encodedPassword = encoder.encode(model.getPassword());
+		model.setPassword(encodedPassword);
+		
+		var userTemp = repo.save(model);
 
+		if (userTemp == null) {
+			return ResponseEntity.badRequest().build();
+		} else {
+			return ResponseEntity.status(HttpStatus.CREATED).body(userTemp.getId());
+		}
+	}
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> delete(@PathVariable Long id) {
 		try {
