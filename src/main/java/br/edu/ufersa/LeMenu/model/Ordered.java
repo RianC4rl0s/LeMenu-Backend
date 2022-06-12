@@ -1,19 +1,18 @@
 package br.edu.ufersa.LeMenu.model;
 
-import java.util.Set;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="tb_ordered")
-@PrimaryKeyJoinColumn(name="id_produto")
-public class Ordered extends Product{
+public class Ordered {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -21,20 +20,32 @@ public class Ordered extends Product{
 	private String status;
 	private String description;
 	
-	@ManyToMany(mappedBy = "cart")
-	private Set<OrderingTable> orderedTable;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="product_id", referencedColumnName = "id")
+	private Product product;
+	
+	//@ManyToMany(mappedBy = "cart")
+	//private Set<OrderingTable> orderedTable;
+	@ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+	@JoinColumn(name="tb_ordering_table", referencedColumnName = "id")
+	private OrderingTable orderedTable;
+	
 	
 	public Ordered(){};
-	public Ordered(Long id, String status, String description) {
+	public Ordered(Long id, String status, String description,Product product,OrderingTable orderedTable) {
 		this.id = id;
 		this.status = status;
 		this.description = description;
+		this.product = product;
+		this.orderedTable = orderedTable;
 	}
 	
 	public Ordered(Ordered model) {
 		this.id = model.getId();
 		this.status = model.getStatus();
 		this.description = model.getDescription();
+		this.product = model.getProduct();
+		this.orderedTable = model.getOrderedTable();
 	}
 	
 	public Long getId() {
@@ -55,11 +66,22 @@ public class Ordered extends Product{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Set<OrderingTable> getOrderedTable() {
+	public OrderingTable getOrderedTable() {
 		return orderedTable;
 	}
-	public void setOrderedTable(Set<OrderingTable> orderedTable) {
+	public void setOrderedTable(OrderingTable orderedTable) {
 		this.orderedTable = orderedTable;
+	}
+	public Product getProduct() {
+		return product;
+	}
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	@Override
+	public String toString() {
+		return "Ordered [id=" + id + ", status=" + status + ", description=" + description + ", product=" + product
+				+ ", orderedTable=" + orderedTable + "]";
 	}
 	
 	

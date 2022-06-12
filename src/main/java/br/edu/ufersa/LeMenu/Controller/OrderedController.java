@@ -1,9 +1,10 @@
 package br.edu.ufersa.LeMenu.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import javax.persistence.criteria.Order;
-
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ufersa.LeMenu.Dto.OTableDto;
+import br.edu.ufersa.LeMenu.Dto.OrderedDto;
 import br.edu.ufersa.LeMenu.model.Ordered;
-import br.edu.ufersa.LeMenu.model.OrderingTable;
 import br.edu.ufersa.LeMenu.repository.OrderedRepository;
 import br.edu.ufersa.LeMenu.service.OrderedServices;
 
@@ -30,21 +32,40 @@ public class OrderedController {
 	@Autowired
 	private OrderedServices service;
 	
+	@Autowired
 	private OrderedRepository ordRepo;
 	
 	@GetMapping("/search/by-id")
-	public ResponseEntity<Ordered> findById (@Param("id") Long id){
-		return service.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+	public ResponseEntity<OrderedDto> findById (@Param("id") Long id){
+		Optional<OrderedDto> odto= Optional.of( new OrderedDto(service.findById(id).get()));
+		
+		return odto.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 	}
 	
 	@GetMapping("/search/by-status")
-	public ResponseEntity<Ordered> findByStatus (@Param("status") String status){
-		return service.findByStatus(status).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+	public ResponseEntity<OrderedDto> findByStatus (@Param("status") String status){
+		Optional<OrderedDto> odto= Optional.of( new OrderedDto(service.findByStatus(status).get()));
+		
+		return odto.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+//		return service.findByStatus(status).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 	}
 	
 	@GetMapping("/search/all")
-	public List<Ordered> findAll (){
-		return service.findAll();
+	public List<OrderedDto> findAll (){
+		
+		ArrayList<Ordered> ao = new ArrayList<>(service.findAll());
+		ArrayList<OrderedDto> odto = new ArrayList<OrderedDto>();
+		for(int i= 0; i < ao.size();i++) {
+			OrderedDto odtoT = new OrderedDto( ao.get(i));
+			System.out.println(ao.get(i).toString());
+			OTableDto tdto = new OTableDto(ao.get(i).getOrderedTable());
+			odtoT.setOrderedTable(tdto);
+			odto.add(odtoT);
+		}
+		
+		return odto;
+		//return service.findAll();
+		
 	}
 	
 	@DeleteMapping("/delete/{id}")
@@ -69,7 +90,7 @@ public class OrderedController {
 	}
 	
 	@PutMapping("/update/{id}") 
-	public ResponseEntity<Ordered> update (@PathVariable Long id, @RequestBody Ordered o){
+	public ResponseEntity<OrderedDto> update (@PathVariable Long id, @RequestBody Ordered o){
 		Ordered odTemp= ordRepo.findById(id).get();
 		if (odTemp == null) {
 			return ResponseEntity.notFound().build();
@@ -80,7 +101,10 @@ public class OrderedController {
 			if (odTemp2 == null) {
 				return ResponseEntity.badRequest().build();
 			} else {
-				return ResponseEntity.status(HttpStatus.CREATED).body(odTemp2);
+				OrderedDto odto = new OrderedDto(odTemp2);
+				OTableDto tdto = new OTableDto(odTemp2.getOrderedTable());
+				odto.setOrderedTable(tdto);
+				return ResponseEntity.status(HttpStatus.CREATED).body(odto);
 			}
 		}
 		//return null;

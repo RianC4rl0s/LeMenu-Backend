@@ -83,7 +83,6 @@ public class ClerkController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(userTemp.getId());
 		}
 	}
-	
 	@PostMapping("/newadm")
 	public ResponseEntity<Long> saveAdm(@RequestBody Clerk model) {
 		Role roleAttendant = roleRepository.findByName("ROLE_ADMIN")
@@ -101,7 +100,6 @@ public class ClerkController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(userTemp.getId());
 		}
 	}
-
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> delete(@PathVariable Long id) {
 		try {

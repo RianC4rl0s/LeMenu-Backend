@@ -31,13 +31,23 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
 	private List<String> openRoutes = Arrays.asList(
 			"/login",
-			"/token/refresh", 
-			"CLIENTROUTES", 
+			"/token/refresh",
+			"/table/search/by-code",
+			"/table/open/",
+			"/table/close",
+			"/table/list/order",
+			"/table/add-order",
+			"/table/remove-order",
+			"/product/search/all",
+			"/client/new",
+			"/ordered/new", 
 			"/request/search");
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+		
+		System.out.println("ALOOOOOOO" + request.getServletPath());
 		
 		if (openRoutes.contains(request.getServletPath())) {
 			filterChain.doFilter(request, response);

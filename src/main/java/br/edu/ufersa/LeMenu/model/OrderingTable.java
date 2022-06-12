@@ -9,12 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_ordering_table")
@@ -25,9 +22,11 @@ public class OrderingTable {
 	@Column(unique=true)
 	private String code;
 	private boolean isOpen;
-	@JsonIgnore
-	@ManyToMany
-	@JoinTable(name = "order_cart", joinColumns = @JoinColumn(name = "ordering_table_id"), inverseJoinColumns = @JoinColumn(name = "ordered_id"))
+	
+	//@JsonIgnore
+	//@ManyToMany(cascade = CascadeType.ALL)
+	//@JoinTable(name = "order_cart", joinColumns = @JoinColumn(name = "ordering_table_id"), inverseJoinColumns = @JoinColumn(name = "ordered_id"))
+	@OneToMany(mappedBy="orderedTable",cascade = CascadeType.ALL)
 	private Set<Ordered> cart;
 
 	@OneToOne(cascade = CascadeType.ALL)
@@ -123,4 +122,11 @@ public class OrderingTable {
 		isOpen = false;
 	}
 
+	@Override
+	public String toString() {
+		return "OrderingTable [id=" + id + ", code=" + code + ", isOpen=" + isOpen + ", client="
+				+ client + "]";
+	}
+	
+	
 }

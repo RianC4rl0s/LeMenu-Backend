@@ -1,8 +1,8 @@
 package br.edu.ufersa.LeMenu.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ufersa.LeMenu.Dto.OTableDto;
+import br.edu.ufersa.LeMenu.Dto.OrderedDto;
 import br.edu.ufersa.LeMenu.model.Ordered;
 import br.edu.ufersa.LeMenu.model.OrderingTable;
 import br.edu.ufersa.LeMenu.repository.OrderingTableRepository;
@@ -32,27 +34,47 @@ public class TableController {
 	private OrderingTableRepository tableRepo;
 
 	@GetMapping("/search/by-id")
-	public ResponseEntity<OrderingTable> findById(@Param("id") Long id) {
-		return service.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+	public ResponseEntity<OTableDto> findById(@Param("id") Long id) {
+		OTableDto odto = new OTableDto(service.findById(id).get());
+		Optional<OTableDto> oo = Optional.of(odto);
+		return oo.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 	}
 	@GetMapping("/list/order")
-	public Set<Ordered> listOrderedCart(@Param("id") Long id) {
+	public List<OrderedDto> listOrderedCart(@Param("id") Long id) {
 		Optional<OrderingTable> ot = service.findById(id);
 		if(ot.isEmpty()) {
 			return null;
 		}else {
-			return ot.get().getCart();
+			ArrayList<Ordered> ao = new ArrayList<>(ot.get().getCart());
+			ArrayList<OrderedDto> odto = new ArrayList<OrderedDto>();
+			for(int i= 0; i < ao.size();i++) {
+				OrderedDto temp = new OrderedDto( ao.get(i));
+				OTableDto tdto = new OTableDto(ao.get(i).getOrderedTable());
+				temp.setOrderedTable(tdto);
+				odto.add(temp);
+			}
+			
+			return odto;
 		}
 		
 	}
 	@GetMapping("/search/by-code")
-	public ResponseEntity<OrderingTable> findByCode(@Param("code") String code) {
-		return service.findByCode(code).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+	public ResponseEntity<OTableDto> findByCode(@Param("code") String code) {
+		OTableDto odto = new OTableDto(service.findByCode(code).get());
+		Optional<OTableDto> oo = Optional.of(odto);
+		return oo.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+		//return service.findByCode(code).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 	}
 
 	@GetMapping("/search/all")
-	public List<OrderingTable> findAll() {
-		return service.findAll();
+	public List<OTableDto> findAll() {
+		ArrayList<OrderingTable> o = new ArrayList<>(service.findAll());
+		ArrayList<OTableDto> oo = new ArrayList<>();
+		for(int i = 0; i< o.size();i++) {
+			oo.add(new OTableDto(o.get(i)));
+		}
+		
+		return oo;
 	}
 	
 	@DeleteMapping("/delete/{id}")
@@ -91,8 +113,8 @@ public class TableController {
 			}
 		}
 	}
-	@PutMapping("/close/{id}")
-	public ResponseEntity<Long> closeTable(@PathVariable Long id) {
+	@PutMapping("/close")
+	public ResponseEntity<Long> closeTable(@Param("id") Long id) {
 		
 		OrderingTable tbTemp = tableRepo.findById(id).get();
 		if (tbTemp == null) {
@@ -107,8 +129,8 @@ public class TableController {
 			}
 		}
 	}
-	@PutMapping("/open/{id}")
-	public ResponseEntity<Long> openTable(@PathVariable Long id) {
+	@PutMapping("/open")
+	public ResponseEntity<Long> openTable(@Param("id") Long id) {
 		
 		OrderingTable tbTemp = tableRepo.findById(id).get();
 		if (tbTemp == null) {
@@ -123,26 +145,31 @@ public class TableController {
 			}
 		}
 	}
-	@PutMapping("/add-order/{id}")
-	public ResponseEntity<Long> addOrder(@PathVariable Long id, @RequestBody Ordered o) {
+	@PutMapping("/add-order")
+	public ResponseEntity<Long> addOrder(@Param("id") Long id, @RequestBody Ordered o) {
 		
-		OrderingTable tbTemp = tableRepo.findById(id).get();
+		OrderingTable tbTemp = tableRepo.findById(id).orElse(null);
 		if (tbTemp == null) {
 			return ResponseEntity.notFound().build();
 		} else {
 			//tbTemp.setCode(tb.getCode());
 			//tbTemp.setIsOpen(tb.getIsOpen());
+			System.out.println(o.toString());
 			tbTemp.getCart().add(o);
+			o.setOrderedTable(tbTemp);
+			System.out.println(o.toString());
 			var tbTemp2 = tableRepo.save(tbTemp);
 			if (tbTemp2 == null) {
+				
 				return ResponseEntity.badRequest().build();
 			} else {
+				System.out.println(tbTemp2.toString());
 				return ResponseEntity.status(HttpStatus.CREATED).body(tbTemp2.getId());
 			}
 		}
 	}
-	@PutMapping("/remove-order/{id}")
-	public ResponseEntity<Long> removeOrder(@PathVariable Long id, @RequestBody Ordered o) {
+	@PutMapping("/remove-order")
+	public ResponseEntity<Long> removeOrder(@Param("id") Long id, @RequestBody Ordered o) {
 		
 		OrderingTable tbTemp = tableRepo.findById(id).get();
 		if (tbTemp == null) {
@@ -150,7 +177,7 @@ public class TableController {
 		} else {
 			//tbTemp.setCode(tb.getCode());
 			//tbTemp.setIsOpen(tb.getIsOpen());
-			tbTemp.getCart().remove(o);
+			tbTemp.getCart().removeIf(element -> (element.getDescription().equals(o.getDescription())));
 			var tbTemp2 = tableRepo.save(tbTemp);
 			if (tbTemp2 == null) {
 				return ResponseEntity.badRequest().build();
