@@ -20,7 +20,7 @@ public class Product {
 	private double sale;
 	private String description;
 	@Lob
-	@Type(type = "org.hibernate.type.StringType")
+	@Type(type = "org.hibernate.type.ImageType")
 	private String image;
 	private boolean isOnMenu;
 	
