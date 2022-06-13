@@ -148,6 +148,8 @@ public class TableController {
 			}
 		}
 	}
+	
+	@Transactional
 	@PutMapping("/add-order")
 	public ResponseEntity<Long> addOrder(@Param("id") Long id, @RequestBody Ordered o) {
 		
@@ -171,6 +173,8 @@ public class TableController {
 			}
 		}
 	}
+	
+	@Transactional
 	@PutMapping("/remove-order")
 	public ResponseEntity<Long> removeOrder(@Param("id") Long id, @RequestBody Ordered o) {
 		
