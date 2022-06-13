@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 @Entity	
 @Table(name="tb_product")
 public class Product {
@@ -18,6 +20,7 @@ public class Product {
 	private double sale;
 	private String description;
 	@Lob
+	@Type(type = "org.hibernate.type.StringType")
 	private String image;
 	private boolean isOnMenu;
 	
